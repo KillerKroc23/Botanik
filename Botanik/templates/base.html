@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main_controller.home_func') }}">Home</a></li>
+                <li><a href="{{ url_for('main_controller.about_func') }}">About</a></li>
+                <li><a href="{{ url_for('main_controller.contact_func') }}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="horizontal-scroll">
+        <!-- First Section -->
+        <section class="parallax-section parallax-1">
+            <div class="content">
+                <h1>Welcome to the Future</h1>
+                <p>Explore our world of innovation and creativity.</p>
+            </div>
+        </section>
+
+        <!-- Second Section -->
+        <section class="parallax-section parallax-2">
+            <div class="content">
+                <h1>Seamless Integration</h1>
+                <p>All your devices and services connected like never before.</p>
+            </div>
+        </section>
+
+        <!-- Third Section -->
+        <section class="parallax-section parallax-3">
+            <div class="content">
+                <h1>Elegant Design</h1>
+                <p>Experience simplicity and elegance in every corner of the product.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2024 Your Company. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

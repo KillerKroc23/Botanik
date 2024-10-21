@@ -1,0 +1,285 @@
+/* Global styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: scroll; /* Enable horizontal scrolling */
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+header ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+header ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px;
+}
+
+header ul li a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+/* Horizontal scrolling container */
+.horizontal-scroll {
+    display: flex;
+    height: 100vh;
+    width: 300vw; /* 3x the viewport width for three sections */
+}
+
+/* Parallax sections */
+.parallax-section {
+    flex: 0 0 100vw; /* Each section takes 100% of the viewport width */
+    height: 100vh;
+    position: relative;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+/* Background images for each section */
+.parallax-1 {
+    background-image: url("{{ url_for('static', filename='img/feature1.jpg') }}");
+}
+
+.parallax-2 {
+    background-image: url("{{ url_for('static', filename='img/feature2.jpg') }}");
+}
+
+.parallax-3 {
+    background-image: url("{{ url_for('static', filename='img/feature3.jpg') }}");
+}
+
+/* Content styling inside each section */
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+/* Smooth transition when scrolling */
+body {
+    scroll-behavior: smooth;
+}
+
+/* Responsive Design */
+@media only screen and (max-device-width: 1024px) {
+    .horizontal-scroll {
+        display: block;
+        width: 100%;
+    }
+
+    .parallax-section {
+        width: 100%;
+        background-attachment: scroll;
+    }
+}
+
+
+/* Content styling inside each section */
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+/* Smooth transition when scrolling */
+body {
+    scroll-behavior: smooth;
+}
+
+/* Responsive Design */
+@media only screen and (max-device-width: 1024px) {
+    .horizontal-scroll {
+        display: block;
+        width: 100%;
+    }
+
+    .parallax-section {
+        width: 100%;
+        background-attachment: scroll;
+    }
+}
+
+
+/* Dropdown styles */
+.dropdown {
+    display: none;
+    position: absolute;
+    background-color: #007bff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.dropdown a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {
+    background-color: #00bfff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    header {
+        background: #007bff; /* Solid color for mobile */
+    }
+}
+
+
+/* Hero section */
+.hero {
+    position: relative;
+}
+
+.parallax {
+    background-image: url("{{ url_for('static', filename='img/cover.jpg') }}");
+    min-height: 100vh; /* Full viewport height */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.8;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: black;
+}
+
+.content h1 {
+    font-size: 3em;
+}
+
+.content p {
+    font-size: 1.2em;
+}
+
+/* Feature cards */
+.feature-cards {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+}
+
+.card {
+    background: darkseagreen;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    max-width: 100px;
+    transition: transform 0.3s;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+.card h2 {
+    color: #333333;
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.card p {
+    font-size: 1em;
+    color: white;
+}
+
+/* Card hover effect */
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f8f8;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feature-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card {
+        margin: 20px 0;
+        width: 90%;
+    }
+}

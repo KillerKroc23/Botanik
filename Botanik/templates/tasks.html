@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Tasks for {{ project.name }}</h1>
+<a href="{{ url_for('main_controller.add_task_func', project_id=project.id) }}">Add Task</a>
+<ul>
+    {% for task in tasks %}
+    <li>{{ task.title }} - {{ 'Completed' if task.completed else 'Incomplete' }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

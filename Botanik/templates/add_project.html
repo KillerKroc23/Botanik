@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add New Project</h1>
+<form method="POST">
+    <label for="name">Project Name</label>
+    <input type="text" name="name" id="name" required>
+    <label for="description">Description</label>
+    <textarea name="description" id="description"></textarea>
+    <button type="submit">Add Project</button>
+</form>
+{% endblock %}
