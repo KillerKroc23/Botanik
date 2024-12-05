@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-2">Historical Data from MQTT</h1>
+
+<div class="card">
+    <div class="chart-wrapper">
+        <div class="chart-container">
+            <h3>Temperature History</h3>
+            <canvas id="temperatureChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>Humidity History</h3>
+            <canvas id="humidityChart"></canvas>
+        </div>
+    </div>
+
+    <div class="data-summary mt-2">
+        <div class="data-card">
+            <h3>Average Temperature</h3>
+            <div id="avgTemp" class="data-value">--</div>
+        </div>
+        <div class="data-card">
+            <h3>Average Humidity</h3>
+            <div id="avgHumidity" class="data-value">--</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+   let tempChart, humidityChart;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Temperature Chart
+    const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+    tempChart = new Chart(tempCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: [],
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    suggestedMin: 15,
+                    suggestedMax: 35,
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                }
+            }
+        }
+    });
+
+    // Initialize Humidity Chart
+    const humidityCtx = document.getElementById('humidityChart').getContext('2d');
+    humidityChart = new Chart(humidityCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Humidity (%)',
+                data: [],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    title: {
+                        display: true,
+                        text: 'Humidity (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                }
+            }
+        }
+    });
+
+    // Function to update both charts
+    async function updateCharts() {
+        try {
+            const response = await fetch('/get-historical-data');
+            const data = await response.json();
+
+            console.log('Received data:', data);  // Debug log
+
+            if (data.error) {
+                console.error('Server error:', data.error);
+                return;
+            }
+
+            // Update temperature chart
+            if (data.timestamps && data.temperatures) {
+                tempChart.data.labels = data.timestamps;
+                tempChart.data.datasets[0].data = data.temperatures;
+                tempChart.update();
+
+                // Update temperature average
+                if (data.temperatures.length > 0) {
+                    const avgTemp = data.temperatures.reduce((a, b) => a + b, 0) / data.temperatures.length;
+                    document.getElementById('avgTemp').textContent = `${avgTemp.toFixed(1)}°C`;
+                }
+            }
+
+            // Update humidity chart
+            if (data.timestamps && data.humidities) {
+                humidityChart.data.labels = data.timestamps;
+                humidityChart.data.datasets[0].data = data.humidities;
+                humidityChart.update();
+
+                // Update humidity average
+                if (data.humidities.length > 0) {
+                    const avgHumidity = data.humidities.reduce((a, b) => a + b, 0) / data.humidities.length;
+                    document.getElementById('avgHumidity').textContent = `${avgHumidity.toFixed(1)}%`;
+                }
+            }
+        } catch (error) {
+            console.error('Error updating charts:', error);
+        }
+    }
+
+    // Initial update
+    updateCharts();
+
+    // Update every 5 minutes
+    setInterval(updateCharts, 300000);
+});
+</script>
+
+{% endblock %}

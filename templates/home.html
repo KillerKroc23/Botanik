@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="hero">
+    <!-- Video Background -->
+    <div class="video-background">
+        <div class="video-foreground">
+            <video autoplay muted loop playsinline id="myVideo">
+                <source src="/static/videos/istockphoto-1648869084-640_adpp_is.mp4" type="video/mp4">
+                <!-- Fallback background if video fails to load -->
+            </div>
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <div class="logo-container">
+            <img src="/static/img/logo.jpg" alt="BOTanik Logo" class="hero-logo">
+        </div>
+        <h1 class="hero-title">BOTanik</h1>
+        <p class="hero-description">Where Nature Meets Automation</p>
+        <div class="button-container">
+            <a href="{{ url_for('main_controller.livedata_func') }}" class="neon-button">
+                <span class="button-text">Live Data</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Historical Data</h3>
+                <p>Access and analyze past environmental trends and patterns.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Live Monitoring</h3>
+                <p>Real-time environmental data tracking and analysis.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Research Tools</h3>
+                <p>Advanced tools for environmental research and analysis.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

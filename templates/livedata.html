@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-2">Live Data from MQTT</h1>
+
+<div class="card">
+    <div class="chart-wrapper">
+        <div class="chart-container">
+            <h3>Temperature Chart</h3>
+            <canvas id="temperatureChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>Humidity Chart</h3>
+            <canvas id="humidityChart"></canvas>
+        </div>
+    </div>
+
+    <div class="data-summary mt-2">
+        <div class="data-card">
+            <h3>Latest Temperature</h3>
+            <div id="latestTemp" class="data-value">--</div>
+        </div>
+        <div class="data-card">
+            <h3>Latest Humidity</h3>
+            <div id="latestHumidity" class="data-value">--</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+    // Initialize the charts with styling that matches your CSS theme
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,  // This is crucial for fixed height
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                        size: 12
+                    },
+                    padding: 10
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                grid: {
+                    color: '#e2e8f0'
+                },
+                ticks: {
+                    font: {
+                        family: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    color: '#e2e8f0'
+                },
+                ticks: {
+                    font: {
+                        family: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    },
+                    maxRotation: 45,
+                    minRotation: 45
+                }
+            }
+        },
+        layout: {
+            padding: {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10
+            }
+        }
+    };
+
+    const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+    const humidityCtx = document.getElementById('humidityChart').getContext('2d');
+
+    const tempChart = new Chart(tempCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: [],
+                borderColor: '#3182ce',
+                backgroundColor: 'rgba(49, 130, 206, 0.1)',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: chartOptions
+    });
+
+    const humidityChart = new Chart(humidityCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Humidity (%)',
+                data: [],
+                borderColor: '#2c5282',
+                backgroundColor: 'rgba(44, 82, 130, 0.1)',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: chartOptions
+    });
+
+    // Function to update charts with new data
+    function updateCharts(data) {
+        const maxDataPoints = 20; // Reduced for better visibility
+
+        // Update temperature chart
+        tempChart.data.labels.push(new Date(data.timestamp).toLocaleTimeString());
+        tempChart.data.datasets[0].data.push(data.temperature);
+
+        // Update humidity chart
+        humidityChart.data.labels.push(new Date(data.timestamp).toLocaleTimeString());
+        humidityChart.data.datasets[0].data.push(data.humidity);
+
+        // Remove old data points if we exceed maxDataPoints
+        if (tempChart.data.labels.length > maxDataPoints) {
+            tempChart.data.labels.shift();
+            tempChart.data.datasets[0].data.shift();
+        }
+        if (humidityChart.data.labels.length > maxDataPoints) {
+            humidityChart.data.labels.shift();
+            humidityChart.data.datasets[0].data.shift();
+        }
+
+        // Update the charts
+        tempChart.update('none'); // Using 'none' for better performance
+        humidityChart.update('none');
+
+        // Update latest values
+        document.getElementById('latestTemp').textContent = `${data.temperature.toFixed(1)}°C`;
+        document.getElementById('latestHumidity').textContent = `${data.humidity.toFixed(1)}%`;
+    }
+
+    // data for testing
+   function connectToMQTT() {
+    setInterval(() => {
+        const mockData = {
+            timestamp: Date.now(),
+            temperature: 22 + Math.random(), // Will vary between 22 and 23 exactly
+            humidity: 50 + Math.random() * 20
+        };
+        updateCharts(mockData);
+    }, 2000);
+}
+
+    // Start the connection when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        connectToMQTT();
+    });
+</script>
+{% endblock %}

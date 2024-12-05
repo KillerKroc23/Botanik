@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="main-content">
+        <div class="hero">
+            <div class="video-background">
+                <div class="video-foreground">
+                    <video id="myVideo" autoplay loop muted>
+                        <source src="{{ url_for('static', filename='video/background.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <div class="logo-container">
+                    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="BOTanik Logo" class="hero-logo">
+                </div>
+                <h1 class="hero-title">BOTanik</h1>
+                <p class="hero-description">Innovation Through Nature</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-overlay">
+        <div class="login-modal">
+            <div class="login-header">
+                <div class="logo-animation">
+                    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="BOTanik Logo" class="login-logo">
+                </div>
+                <h2 class="login-title">BOTanik</h2>
+                <p class="login-subtitle">Innovation Through Nature</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-error">
+                            <div class="alert-content">
+                                <span class="alert-icon">⚠️</span>
+                                <span class="alert-message">{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form class="login-form" method="post" action="{{ url_for('auth_controller.login') }}">
+                <div class="input-group-container">
+                    <div class="input-group">
+                        <input type="text" id="username" name="username" placeholder=" " required>
+                        <label for="username">
+                            <span class="icon">👤</span>
+                            <span class="label-text">Username</span>
+                        </label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" placeholder=" " required>
+                        <label for="password">
+                            <span class="icon">🔒</span>
+                            <span class="label-text">Password</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="login-button">
+                    <span class="button-text">Enter</span>
+                    <span class="button-icon">→</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

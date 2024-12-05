@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+        <ul class="nav-menu">
+            <li><a href="{{ url_for('main_controller.home_func') }}" class="{% if request.endpoint == 'main_controller.home_func' %}active{% endif %}">Home</a></li>
+            <li><a href="{{ url_for('main_controller.historicaldata_func') }}" class="{% if request.endpoint == 'main_controller.historicalData_func' %}active{% endif %}">Historical Data</a></li>
+            <li><a href="{{ url_for('main_controller.livedata_func') }}" class="{% if request.endpoint == 'main_controller.livedata_func' %}active{% endif %}">Live Data</a></li>
+            <li><a href="{{ url_for('main_controller.about_func') }}" class="{% if request.endpoint == 'main_controller.about_func' %}active{% endif %}">About</a></li>
+            <li><a href="{{ url_for('main_controller.contact_func') }}" class="{% if request.endpoint == 'main_controller.contact_func' %}active{% endif %}">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="content">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
